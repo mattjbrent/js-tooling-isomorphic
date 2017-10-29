@@ -2,33 +2,40 @@
   "name": "js-tooling-isomorphic",
   "version": "1.0.0",
   "description": "A blank canvas for an isomorphic app",
-  "main": "index.js",
   "scripts": {
-    "start": "babel-node src/index.js",
+    "start": "npm run dev:start",
+    "dev:start": "nodemon --ignore lib --exec babel-node src/server",
+    "prod:build": "rimraf lib && node-sass scss -o public/css --output-style compressed && babel src -d lib --ignore .test.js",
+	 "prod:start": "cross-env NODE_ENV=production pm2 start lib/server && pm2 logs",
+	 "prod:stop": "pm2 delete server",
     "test": "eslint src && jest --coverage",
-	 "prepush": "npm test"
+    "prepush": "npm test && npm run prod:build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mattjbrent/js-tooling-isomorphic.git"
   },
-  "author": "",
+  "author": "MBrent",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mattjbrent/js-tooling-isomorphic/issues"
+  "dependencies": {
+    "compression": "^1.7.1",
+    "express": "^4.16.2"
   },
-  "homepage": "https://github.com/mattjbrent/js-tooling-isomorphic#readme",
-  "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-jest": "^21.2.0",
     "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.1",
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
     "husky": "^0.14.3",
-    "jest": "^21.2.1"
+    "jest": "^21.2.1",
+    "node-sass": "^4.5.3",
+    "nodemon": "^1.12.1",
+    "pm2": "^2.7.2",
+    "rimraf": "^2.6.2"
   }
 }
